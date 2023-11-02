@@ -1,0 +1,25 @@
+pipeline
+{
+    agent any
+    tools{
+        maven 'Default'
+    }
+    
+    stages{
+        stage('Build'){
+            steps{
+                echo 'This pipeline build by SOHAM'
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/SohmP/Maven-Project.git']])
+                            
+                }
+            }
+        }
+        post{
+            always {
+                junit(
+                    allowEmptyResults:true,
+                    testResults: 'tests-reports/.xml'
+                    )
+            }
+        }
+    }
